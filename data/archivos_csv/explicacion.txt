@@ -1,0 +1,6 @@
+Responsabilidad: Archivo CSV que actúa como la "base de datos".
+
+Contiene los registros persistentes.
+
+Se accede y modifica desde services/csv_service.py.
+

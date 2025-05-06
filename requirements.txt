@@ -1,0 +1,11 @@
+# requirements.txt
+fastapi
+uvicorn
+pandas
+python-multipart
+python-dotenv
+uvicorn app.main:app --reload
+pip install pandas
+pip install "fastapi[standard]"
+pip install uvicorn
+
