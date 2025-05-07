@@ -1,17 +1,30 @@
-# main.py
-"""Responsabilidad: Punto de entrada de la aplicación FastAPI.
-
-Define la instancia de FastAPI.
-
-Incluye los routers (include_router).
-
-Configura middlewares y otras inicializaciones.
-"""
 from fastapi import FastAPI
-from app.routers import upload
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from app.routers import estudiantes
 
-app.include_router(upload.router, prefix="/api", tags=["Subida de CSV"])
+app = FastAPI(
+    title="API de Estudiantes",
+    description="API para cargar y gestionar datos de estudiantes desde CSV",
+    version="1.0.0"
+)
 
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+# Incluir routers
+app.include_router(estudiantes.router, prefix="/api", tags=["estudiantes"])
+
+@app.get("/")
+async def root():
+    return {"message": "API de Estudiantes funcionando correctamente"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
