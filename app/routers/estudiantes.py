@@ -4,6 +4,9 @@ from typing import List, Dict, Any
 from app.services.estudiante_service import EstudianteService
 from app.schemas.estudiante import Estudiante, EstudianteList, CSVUploadResponse
 
+from fastapi.responses import StreamingResponse
+import io
+
 router = APIRouter()
 
 # Dependencia para obtener el servicio de estudiantes
@@ -53,6 +56,34 @@ async def get_resumen_validacion(
     """
     return estudiante_service.get_resumen_validacion()
 
+@router.get("/estudiantes/descargar-csv")
+async def descargar_csv_limpio(
+    estudiante_service: EstudianteService = Depends(get_estudiante_service)
+):
+    estudiantes_limpios = estudiante_service.get_estudiantes_validos()
+
+    if not estudiantes_limpios:
+        raise HTTPException(status_code=404, detail="No hay estudiantes válidos para exportar.")
+
+    def modelo_a_dict(obj):
+        return {k: v for k, v in obj.__dict__.items() if not k.startswith('_')}
+
+    output = io.StringIO()
+    headers = list(modelo_a_dict(estudiantes_limpios[0]).keys())
+    output.write(','.join(headers) + '\n')
+
+    for estudiante in estudiantes_limpios:
+        data = modelo_a_dict(estudiante)
+        fila = [str(data[h]) for h in headers]
+        output.write(','.join(fila) + '\n')
+
+    output.seek(0)
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=estudiantes_limpios.csv"}
+    )
+
 @router.get("/estudiantes/{id_estudiante}", response_model=Estudiante)
 async def get_estudiante(
     id_estudiante: str,
@@ -63,3 +94,4 @@ async def get_estudiante(
     """
     estudiante = estudiante_service.get_estudiante_by_id(id_estudiante)
     return estudiante
+
