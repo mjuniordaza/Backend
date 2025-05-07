@@ -25,10 +25,10 @@ VALORES_PERMITIDOS = {
     "riesgo_desercion": ["Muy bajo", "Bajo", "Medio", "Alto", "Muy alto", None, ""],
     "tipo_participante": ["Admitido", "Nuevo", "Media académica", None, ""],
     "riesgo_spadies": ["Bajo", "Medio", "Alto", None, ""],
-    "nivel_riesgo": ["Muy bajo", "Bajo", "Medio", "Alto", "Muy alto", None, ""],
+    "nivel_riesgo": ["Muy Bajo", "Bajo", "Medio", "Alto", "Muy alto", None, ""],
     "requiere_tutoria": ["true", "false", "True", "False", None, ""],
-    "tipo_intervencion": ["Asesoría", "Taller", "Otro", None, ""],
-    "condicion_socioeconomica": ["Económica", "Múltiple", None, ""],
+    "tipo_intervencion": ["Asesoría", "Taller", "Otro","Asesoría grupal","Talleres psicosociales","Terapia individual","Actividades de autocuidado", None, ""],
+    "condicion_socioeconomica": ["Económica", "Múltiple","Académica","Psicosocial", None, ""],
     "aprobado": ["true", "false", "True", "False", None, ""]
 }
 
